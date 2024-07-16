@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PhoneBook.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmontes <fmontes@student.42.fr>            +#+  +:+       +#+        */
+/*   By: felipe <felipe@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 13:21:15 by fmontes           #+#    #+#             */
-/*   Updated: 2024/07/11 13:28:51 by fmontes          ###   ########.fr       */
+/*   Updated: 2024/07/12 14:56:43 by felipe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ void PhoneBook::searchContacts(std::string contactToSearch)
 	{
 		if (contacts[i].getFirstName() == contactToSearch)
 		{
-			std::cout << i << " | " << std::setw(10) << std::right << truncate(contacts[i].getFirstName()) << " | " << std::setw(10) << std::right << truncate(contacts[i].getLastName()) << " | " << std::setw(10) << std::right << truncate(contacts[i].getNickName()) << std::endl;
+			std::cout << i << " | " << std::setw(10) << std::right << truncate(contacts[i].getFirstName()) << " | " 
+			<< std::setw(10) << std::right << truncate(contacts[i].getLastName()) << " | " << std::setw(10) 
+			<< std::right << truncate(contacts[i].getNickName()) << std::endl;
 			break ;
 		}
 		i++;
@@ -61,7 +63,11 @@ void PhoneBook::schedule()
 		std::cout << "Enter a command: ";
 		std::cin >> command;
 		if (command == "ADD")
+		{
+			if (i == 8)
+				i = 0;
 			contacts[i++].start();
+		}
 		else if (command == "SEARCH")
 		{
 			std::string contactToSearch;
