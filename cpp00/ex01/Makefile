@@ -1,29 +1,25 @@
 CC = c++
-FLAGS = -std=c++98 -Wall -Wextra -Werror
-NAME = phonebook
-SRC = *.cpp
-OBJ = $(SRC:.cpp=.o)
+CFLAGS = -Wall -Wextra -Werror -std=c++98
+TARGET = phonebook
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(SOURCES:.cpp=.o)
 
-# Colors
-GREEN = \033[0;32m
-RED = \033[0;31m
-NC = \033[0m # No Color
+all: $(TARGET)
 
-all: $(NAME)
-	@echo "$(GREEN)Compilation finished$(NC)"
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $@ $^
 
-$(NAME): $(OBJ)
-	@$(CC) $(FLAGS) $(OBJ) -o $(NAME)
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@rm -f $(OBJ)
-	@echo "$(RED)Object files removed$(NC)"
+	rm -f $(OBJECTS)
 
 fclean: clean
-	@rm -f $(NAME)
-	@echo "$(RED)Executable removed$(NC)"
+	rm -f $(TARGET)
 
-re: fclean all
-	@echo "$(GREEN)Recompiled$(NC)"
+re:
+	@$(MAKE) fclean
+	@$(MAKE) all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean

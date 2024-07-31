@@ -6,7 +6,7 @@
 /*   By: fmontes <fmontes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 13:21:19 by fmontes           #+#    #+#             */
-/*   Updated: 2024/07/11 13:04:28 by fmontes          ###   ########.fr       */
+/*   Updated: 2024/07/31 13:52:02 by fmontes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,19 @@
 class PhoneBook
 {
   private:
-  public:
+	int contactCount;
+	int oldestContactIndex;
 	Contact contacts[8];
+
+  public:
 	PhoneBook();
 	~PhoneBook();
+	void addContact(const Contact &newContact);
+	void displayContacts() const;
+	void listContacts();
 	void schedule();
-	void searchContacts(std::string contactToSearch);
+	void searchContacts(int index);
+	int stringToInt(const std::string &str);
 };
 
 #endif

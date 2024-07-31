@@ -1,19 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PhoneBook.cpp                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: felipe <felipe@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/09 13:21:15 by fmontes           #+#    #+#             */
-/*   Updated: 2024/07/12 14:56:43 by felipe           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "PhoneBook.hpp"
+#include <iomanip>
+#include <iostream>
+#include <sstream> // Inclua esta linha para usar std::istringstream
 
-PhoneBook::PhoneBook()
+PhoneBook::PhoneBook() : contactCount(0), oldestContactIndex(0)
 {
+	for (int i = 0; i < 8; ++i)
+	{
+		contacts[i] = Contact();
+	}
 }
 
 PhoneBook::~PhoneBook()
@@ -32,53 +27,55 @@ std::string truncate(const std::string &str)
 	}
 }
 
-void PhoneBook::searchContacts(std::string contactToSearch)
+void PhoneBook::listContacts()
 {
-	int	i;
-
-	i = 0;
-	while (i < 8)
+	for (int i = 0; i < 8; ++i)
 	{
-		if (contacts[i].getFirstName() == contactToSearch)
+		if (!contacts[i].getFirstName().empty())
 		{
-			std::cout << i << " | " << std::setw(10) << std::right << truncate(contacts[i].getFirstName()) << " | " 
-			<< std::setw(10) << std::right << truncate(contacts[i].getLastName()) << " | " << std::setw(10) 
-			<< std::right << truncate(contacts[i].getNickName()) << std::endl;
-			break ;
+			std::cout << i << " | " << std::setw(10) << std::right << truncate(contacts[i].getFirstName()) << " | " << std::setw(10) << std::right << truncate(contacts[i].getLastName()) << " | " << std::setw(10) << std::right << truncate(contacts[i].getNickName()) << std::endl;
 		}
-		i++;
 	}
-	if (i == 8)
-		std::cout << "Contact not found" << std::endl;
 }
 
-void PhoneBook::schedule()
+void PhoneBook::searchContacts(int index)
 {
-	int i = 0;
-	while (true)
+	if ((index < 0 || index >= 8) || contacts[index].getFirstName() == "")
 	{
-		std::string command;
-		std::cout << "ADD, SEARCH or EXIT" << std::endl;
-		std::cout << std::endl;
-		std::cout << "Enter a command: ";
-		std::cin >> command;
-		if (command == "ADD")
-		{
-			if (i == 8)
-				i = 0;
-			contacts[i++].start();
-		}
-		else if (command == "SEARCH")
-		{
-			std::string contactToSearch;
-			std::cout << "displaying contact: ";
-			std::cin >> contactToSearch;
-			searchContacts(contactToSearch);
-		}
-		else if (command == "EXIT")
-			break ;
-		else
-			std::cout << "Invalid command" << std::endl;
-		std::cout << std::endl;
+		std::cout << "invalid index" << std::endl;
+		return ;
+	}
+	std::cout << "Contact details:" << std::endl;
+	std::cout << "First Name: " << contacts[index].getFirstName() << std::endl;
+	std::cout << "Last Name: " << contacts[index].getLastName() << std::endl;
+	std::cout << "Nickname: " << contacts[index].getNickName() << std::endl;
+	std::cout << "PhoneNumber: " << contacts[index].getPhoneNumber() << std::endl;
+	std::cout << "DarkestSecret: " << contacts[index].getDarkestSecret() << std::endl;
+}
+
+int PhoneBook::stringToInt(const std::string &str)
+{
+	int	num;
+
+	std::istringstream iss(str);
+	iss >> num;
+	return (num);
+}
+
+void PhoneBook::addContact(const Contact &newContact)
+{
+	if (!newContact.isvalid())
+	{
+		std::cout << "Invalid contact. All fields must be filled." << std::endl;
+		return ;
+	}
+	if (contactCount < 8)
+	{
+		contacts[contactCount++] = newContact;
+	}
+	else
+	{
+		contacts[oldestContactIndex] = newContact;
+		oldestContactIndex = (oldestContactIndex + 1) % 8;
 	}
 }

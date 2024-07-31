@@ -6,13 +6,22 @@
 /*   By: fmontes <fmontes@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 13:24:28 by fmontes           #+#    #+#             */
-/*   Updated: 2024/07/10 09:46:32 by fmontes          ###   ########.fr       */
+/*   Updated: 2024/07/31 13:46:03 by fmontes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Contact.hpp"
 
-Contact::Contact()
+Contact::Contact() : firstName(""), lastName(""), nickName(""), phoneNumber(""),
+	darkestSecret("")
+{
+}
+
+Contact::Contact(const std::string &firstName, const std::string &lastName,
+	const std::string &nickname, const std::string &phoneNumber,
+	const std::string &darkestSecret) : firstName(firstName),
+	lastName(lastName), nickName(nickname), phoneNumber(phoneNumber),
+	darkestSecret(darkestSecret)
 {
 }
 
@@ -20,27 +29,27 @@ Contact::~Contact()
 {
 }
 
-void Contact::setFirstName(std::string firstName)
+void Contact::setFirstName(std::string &firstName)
 {
 	this->firstName = firstName;
 }
 
-void Contact::setLastName(std::string lastName)
+void Contact::setLastName(std::string &lastName)
 {
 	this->lastName = lastName;
 }
 
-void Contact::setNickName(std::string nickName)
+void Contact::setNickName(std::string &nickName)
 {
 	this->nickName = nickName;
 }
 
-void Contact::setDarkestSecret(std::string darkestSecret)
+void Contact::setDarkestSecret(std::string &darkestSecret)
 {
 	this->darkestSecret = darkestSecret;
 }
 
-void Contact::setPhoneNumber(int phoneNumber)
+void Contact::setPhoneNumber(std::string &phoneNumber)
 {
 	this->phoneNumber = phoneNumber;
 }
@@ -65,23 +74,28 @@ std::string Contact::getDarkestSecret()
 	return (this->darkestSecret);
 }
 
-int Contact::getPhoneNumber()
+std::string Contact::getPhoneNumber()
 {
 	return (this->phoneNumber);
+}
+bool Contact::isvalid() const
+{
+	return (!firstName.empty() && !lastName.empty() && !nickName.empty()
+		&& !phoneNumber.empty() && !darkestSecret.empty());
 }
 
 void Contact::start()
 {
 	std::cout << "First name: ";
-	std::cin >> this->firstName;
+	std::getline(std::cin, this->firstName);
 	std::cout << "Last name: ";
-	std::cin >> this->lastName;
+	std::getline(std::cin, this->lastName);
 	std::cout << "Nickname: ";
-	std::cin >> this->nickName;
+	std::getline(std::cin, this->nickName);
 	std::cout << "Phone number: ";
-	std::cin >> this->phoneNumber;
+	std::getline(std::cin, this->phoneNumber);
 	std::cout << "Darkest secret: ";
-	std::cin >> this->darkestSecret;
+	std::getline(std::cin, this->darkestSecret);
 }
 
 void Contact::search()
