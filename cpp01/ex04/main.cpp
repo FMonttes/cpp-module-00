@@ -1,50 +1,65 @@
+#include <fstream>
 #include <iostream>
 #include <string>
-#include <fstream>
 
-
-void ft_replace(char **argv, std::string line)
+std::string ft_replace(const std::string &texto,
+	const std::string &palavraAntiga, const std::string &palavraNova)
 {
-    std::ofstream output_file((std::string(argv[1]) + ".replace").c_str(), std::ofstream::app);
+	size_t	posInicial;
+	size_t	posEncontrada;
 
-    if (!output_file.is_open())
-    {
-        std::cout << "Error: Can't open file" << std::endl;
-        return;
-    }
-
-    size_t find_len = std::string(argv[2]).length();
-    size_t pos = 0;
-    while ((pos = line.find(argv[2])) != std::string::npos)
-    {
-        output_file << line.substr(0, pos) << argv[3];
-        pos += find_len;
-        line = line.substr(pos);
-    }
-
-    output_file << line << std::endl;
-    output_file.close();
+	std::string resultado;
+	posInicial = 0;
+	posEncontrada = texto.find(palavraAntiga, posInicial);
+	while (posEncontrada != std::string::npos)
+	{
+		resultado.append(texto, posInicial, posEncontrada - posInicial);
+		resultado += palavraNova;
+		posInicial = posEncontrada + palavraAntiga.length();
+		posEncontrada = texto.find(palavraAntiga, posInicial);
+	}
+	resultado.append(texto, posInicial, texto.length() - posInicial);
+	return (resultado);
 }
-
-int main(int argc, char **argv)
+bool	palavraContida(const std::string &linha, const std::string &palavra)
 {
-    std::string line;
-    std::ifstream input_file;
+	return (linha.find(palavra) != std::string::npos);
+}
+int	main(int ac, char **av)
+{
+	if (ac == 4)
+	{
+		std::ifstream inputFile(av[1]);
+		if (!inputFile.is_open())
+		{
+			std::cerr << "Error: file not found" << std::endl;
+			return (1);
+		}
+		std::string line;
 
-    
-    if (argc == 4)
-    {
-        input_file.open(argv[1]);
-        if (!input_file.is_open())
-        {
-            std::cout << "Error: Can't open file" << std::endl;
-            return 1;
-        }
+		std::ofstream outputFile("newfile.replace");
 
-        while (std::getline(input_file, line))
-            ft_replace(argv, line);
-        input_file.close();
-    }
-    else
-        std::cout << "Error: Wrong number of arguments" << std::endl;
+		if (!outputFile.is_open())
+		{
+			std::cerr << "Error: could not create output file" << std::endl;
+			inputFile.close();
+			return (1);
+		}
+		std::string line1;
+		while (std::getline(inputFile, line1))
+		{
+			line1 = ft_replace(line1, av[2], av[3]);
+			outputFile << line1 << std::endl;
+		}
+		outputFile.close();
+
+		inputFile.close();
+
+		return (0);
+	}
+	else
+	{
+		std::cout << "invalid args" << std::endl;
+		return (0);
+	}
 }
