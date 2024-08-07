@@ -1,67 +1,64 @@
 #include "Fixed.hpp"
 
-
-#include "Fixed.hpp"
-
-
-Fixed::Fixed(): _value(0)
+Fixed::Fixed(void) : number(0)
 {
-	std::cout << "Fixed Default Constructor called" << std::endl;
+	std::cout << "Default constructor called" << std::endl;
 }
 
-Fixed::Fixed(const int input)
+Fixed::Fixed(const int num)
 {
-	std::cout << "Fixed Int Constructor called" << std::endl;
-	this->_value = input << this->_fractionalBits;
+	std::cout << "Fixed int constructor called" << std::endl;
+	number = num << this->fractionalBits;
 }
 
+Fixed::Fixed(Fixed const &copy)
+{
+	std::cout << "Copy Constructor Called" << std::endl;
+	*this = copy;
+}
 Fixed::Fixed(const float input)
 {
 	std::cout << "Fixed Float Constructor called" << std::endl;
-	this->_value = roundf(input * (1 << this->_fractionalBits));
+	this->number = roundf(input * (1 << this->fractionalBits));
 }
 
-Fixed::Fixed(const Fixed &copy)
+Fixed &Fixed::operator=(const Fixed &s)
 {
-	std::cout << "Fixed Copy Constructor called" << std::endl;
-	*this = copy;
+	std::cout << "Copy assignation operator called" << std::endl;
+	if (this != &s)
+	{
+		number = s.getRawBits();
+	}
+	return (*this);
+}
+float Fixed::toFloat(void) const
+{
+	return ((float)this->number / (float)(1 << this->fractionalBits));
+}
+
+int Fixed::toInt(void) const
+{
+	return (this->number >> this->fractionalBits);
 }
 
 Fixed::~Fixed()
 {
-	std::cout << "Fixed Deconstructor called" << std::endl;
+	std::cout << "Destructor called" << std::endl;
 }
 
-Fixed &Fixed::operator=(const Fixed &src)
+int Fixed::getRawBits(void) const
 {
-	std::cout << "Fixed Assignation operator called" << std::endl;
-	if (this != &src)
-		this->_value = src.getRawBits();
-
-	return *this;
+	std::cout << "getRawBits member function called" << std::endl;
+	return (number);
 }
 
-float	Fixed::toFloat(void)const
+void Fixed::setRawBits(int const raw)
 {
-	return ((float)this->_value / (float)(1 << this->_fractionalBits));
+	std::cout << "setRawBits member function called" << std::endl;
+	number = raw;
 }
 
-int	Fixed::toInt(void)const
-{
-	return (this->_value >> this->_fractionalBits);
-}
-int	Fixed::getRawBits(void)const
-{
-	return (this->_value);
-}
-
-void	Fixed::setRawBits(int const raw)
-{
-	this->_value = raw;
-}
-
-
-std::ostream	&operator<<(std::ostream &o, Fixed const &fixed)
+std::ostream &operator<<(std::ostream &o, Fixed const &fixed)
 {
 	o << fixed.toFloat();
 	return (o);

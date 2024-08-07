@@ -2,44 +2,68 @@
 
 FragTrap::FragTrap() : ClapTrap()
 {
-    std::cout << "FragTrap default constructor called" << std::endl;
     this->hitPoints = 100;
     this->energyPoints = 100;
     this->attackDamage = 30;
+    std::cout << "scavtrap called \n";
 }
 
 FragTrap::FragTrap(std::string name) : ClapTrap(name)
 {
-    std::cout << "FragTrap name constructor called" << std::endl;
     this->hitPoints = 100;
     this->energyPoints = 100;
     this->attackDamage = 30;
-}
-
-FragTrap::FragTrap(const FragTrap &copy) : ClapTrap(copy)
-{
-    std::cout << "FragTrap copy constructor called" << std::endl;
+    std::cout << "scavtrap called \n";
 }
 
 FragTrap::~FragTrap()
 {
-    std::cout << "FragTrap destructor called" << std::endl;
+    std::cout << "scavtrap destructor called \n";
 }
 
-FragTrap &FragTrap::operator=(const FragTrap &copy)
+void FragTrap::highFiveGuys()
 {
-    std::cout << "FragTrap assignation operator called" << std::endl;
-    if (this != &copy)
+    std::cout << " HIGH FIVE GUYS \n";
+}
+
+void FragTrap::takeDamage(unsigned int amount)
+{
+    if (this->hitPoints > 0)
     {
-        this->name = copy.name;
-        this->hitPoints = copy.hitPoints;
-        this->energyPoints = copy.energyPoints;
-        this->attackDamage = copy.attackDamage;
+        std::cout << this->name << " take " << amount << " of damage" << std::endl;
+        this->hitPoints -= amount;
     }
-    return (*this);
+    else
+    {
+        std::cout << this->name << " is dead" << std::endl;
+    }
 }
 
-void FragTrap::highFiveGuys(void)
+void FragTrap::attack(const std::string &target)
 {
-    std::cout << "FragTrap " << this->name << " requests a high five" << std::endl;
+    if (this->energyPoints > 0)
+    {
+        std::cout << this->name << " attacks " << target << std::endl;
+    }
+    else
+    {
+        std::cout << this->name << " cannot attacks" << std::endl;
+    }
+}
+
+void FragTrap::beRepaired(unsigned int amount)
+{
+    if (this->energyPoints > 0)
+    {
+        if (amount + this->hitPoints <= 100)
+        {
+            std::cout << this->name << " repaired " << amount << " life" << std::endl;
+            this->energyPoints--;
+            this->hitPoints += amount;
+        }
+    }
+    else
+    {
+        std::cout << "energy not enought" << std::endl;
+    }
 }

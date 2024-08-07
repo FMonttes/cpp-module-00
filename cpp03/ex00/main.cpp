@@ -2,12 +2,12 @@
 
 int main()
 {
-    ClapTrap claptrap1;
-    ClapTrap claptrap2("ClapTrap2");
-
-    claptrap1.attack("ClapTrap2");
-    claptrap2.takeDamage(5);
-    claptrap2.beRepaired(5);
-
-    return 0;
+    ClapTrap clapTrap("teste");
+    clapTrap.attack("amigo");
+    clapTrap.takeDamage(5);
+    std::cout << clapTrap.getEnergyPoints() << std::endl;
+    std::cout << clapTrap.getHitPoints() << std::endl;
+    clapTrap.beRepaired(5);
+    std::cout << clapTrap.getHitPoints() << std::endl;
+    std::cout << clapTrap.getEnergyPoints() << std::endl;
 }

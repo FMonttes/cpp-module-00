@@ -2,26 +2,32 @@
 #define CLAPTRAP_HPP
 
 #include <iostream>
-#include <string>
 
 class ClapTrap
 {
-    protected:
-    std::string name;
-    unsigned int hitPoints;
-    unsigned int energyPoints;
-    unsigned int attackDamage;
+protected:
+	std::string name;
+	int hitPoints;
+	int energyPoints;
+	int attackDamage;
 
 public:
-    ClapTrap();
-    ClapTrap(std::string name);
-    ClapTrap(const ClapTrap &copy);
-    ClapTrap &operator=(const ClapTrap &copy);
-    ~ClapTrap();
-
-    void attack(std::string const &target);
-    void takeDamage(unsigned int amount);
-    void beRepaired(unsigned int amount);
+	ClapTrap();
+	ClapTrap(std::string name);
+	~ClapTrap();
+	ClapTrap(ClapTrap &copy);
+	ClapTrap &operator=(const ClapTrap &copy);
+	void attack(const std::string &target);
+	void takeDamage(unsigned int amount);
+	void beRepaired(unsigned int amount);
+	std::string getName();
+	int getHitPoints();
+	int getAttackDamage();
+	int getEnergyPoints();
+	void setName(const std::string newName);
+	void setHitPoints(int newHitPoints);
+	void setEnergyPoints(int newEnergyPoints);
+	void setAttackDamage(int newAttackDamage);
 };
 
 #endif
